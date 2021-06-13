@@ -1,0 +1,157 @@
+__________________
+loop 2004-2016
+regions_count = (year >= 2014) ? 25 : 27
+__________________
+maxval_vrp = MAX(VRP)
+Максимальне значення "Валовий регіональний продукт"
+VNP = 0.333 * NVL(VRP / maxval_vrp, 0.5)
+Валовий національний продукт
+maxval_orpp = MAX(ORPP)
+Максимальне значення "Обсяг реалізованої промислової продукції (товарів, послуг)"
+maxval_psg = MAX(PSG)
+Максимальне значення "Продукція сільського господарства"
+VSF = 0.056 * NVL(ORPP / maxval_orpp, 0.5) + 0.278 * NVL(PSG / maxval_psg, 0.5)
+Виробнича сфера
+maxval_orp = MAX(ORP)
+Максимальне значення "Обсяг реалізованих послуг"
+SP = 0.333 * NVL(ORP / maxval_orp, 0.5)
+Сфера послуг
+Ibp = VNP + VSF + SP
+Базові потреби
+maxval_kap = MAX(KAP)
+Максимальне значення "Кількість активних підприємств"
+PA = 0.334 * NVL(KAP / maxval_kap, 0.5)
+Підприємницька активність
+maxval_oort = MAX(OORT)
+Максимальне значення "Обсяги обороту роздрібної торгівлі"
+SR = 0.333 * NVL(OORT / maxval_oort, 0.5)
+Споживчий ринок
+OETP = OET + OEP
+Обсяги експорту товарів і послуг
+maxval_oetp = MAX(OETP)
+Максимальне значення "Обсяги експорту товарів і послуг"
+OITP = OIT + OIP
+Обсяги імпорту товарів і послуг
+maxval_oitp = MAX(OITP)
+Максимальне значення "Обсяги імпорту товарів і послуг"
+ZED = 0.205 * NVL(OETP / maxval_oetp, 0.5) + 0.128 * NVL(OITP / maxval_oitp, 0.5)
+Зовнішньоекономічна діяльність
+Ipd = PA + SR + ZED
+Підприємницька діяльність
+maxval_smzp = MAX(SMZP)
+Максимальне значення "Середньомісячна заробітна плата"
+ZP = 0.167 * NVL(SMZP / maxval_smzp, 0.5)
+Заробітна плата
+maxval_ean = MAX(EAN)
+Максимальне значення "Економічно активне населення"
+minval_ean = MIN(EAN)
+Мінімальне значення "Економічно активне населення"
+EANA = 0.333 * NVL((1 - (maxval_ean - EAN) / (maxval_ean - minval_ean)), 0.5)
+Економічна активність населення
+maxval_ppp = MAX(PPP)
+Максимальне значення "Потреба підприємств у працівниках"
+PRP = 0.5 * NVL(PPP / maxval_ppp, 0.5)
+Потреба ринку праці
+Irp = ZP + EANA + PRP
+Ринок праці
+maxval_onr = MAX(ONR)
+Максимальне значення "Обсяг наукових та науково - технічних робіт, виконаних власними силами наукових організацій"
+maxval_ovid = MAX(OVID)
+Максимальне значення "Обсяг витрат за напрямами інноваційної діяльності"
+ID = 0.145 * NVL(ONR / maxval_onr, 0.5) + 0.105 * NVL(OVID / maxval_ovid, 0.5)
+Інноваційна діяльність
+maxval_orip = MAX(ORIP)
+Максимальне значення "Обсяг реалізованої інноваційної продукції"
+RIP = 0.25 * NVL(ORIP / maxval_orip, 0.5)
+Реалізація інноваційного потенціалу
+maxval_ki = MAX(KI)
+Максимальне значення "Капітальні інвестиції"
+KIN = 0.5 * NVL(KI / maxval_ki, 0.5)
+Капітальні інвестиції
+Iiim = ID + RIP + KIN
+Інноваційно - інвестиційні можливості
+Iksp = 0.6 * Ibp + 0.4 * Ipd
+Індекс конкуренто­спроможності
+Iikp = 0.3 * Irp + 0.7 * Iiim
+Індекс інноваційно - кадрового потенціалу
+Iec = (Iksp + Iikp) / 2
+Економічна складова -----------------------------------
+AIR17I = AIR201_norm
+Атмосферне повітря
+LRS17I = LRS201_norm
+Земельні ресурси
+BRS17I = BRS171_norm
+Природно - заповідний фонд 
+NTS20I = 0.4 * FFA201_norm + 0.2 * FFA202_norm + 0.1 * FFA203_norm + 0.3 * HZD171_norm
+Cтан природної та техногенної безпеки
+WAC17I = (WAC171_norm + WAC192_norm) / 2
+Відходи
+EMP20I = EMP171 + EMP202
+Викиди забруднювальних речовин в атмосферне повітря
+WTP17I = (WTP171_norm + WTP172_norm) / 2
+Водне навантаження
+LNP17I = (LNP171_norm + LNP192_norm) / 2
+Утворення відходів 
+CCM17I = CCM201_norm
+Змінювання клімату
+RWE17I = (RWE201_norm + RWE202_norm) / 2
+Водоефективність
+WSU17I = (WSU171_norm + WSU172_norm) / 2
+Керування відходами
+EST17C = (AIR17I + LRS17I + BRS17I + NTS20I + WAC17I) / 5
+Стан довкілля
+EPR17C = (EMP20I_norm + WTP17I + LNP17I) / 3
+Екологічне навантаження і небезпеки
+EMN17C = (CCM17I + RWE17I + WSU17I) / 3
+Екологічне керування
+Ie = (EST17C + EPR17C + EMN17C) / 3
+Індекс екологічного виміру-----------------------------------
+HLT = (AIDS_norm + TSR_norm) / 2
+Розвиток здоров’я
+Ihd = 3/8 * HLT + 3/8 * EL_norm + 0.25 * LM_norm
+Розвиток людського потенціалу
+PCP = (PATLP_norm + PATLSC_norm + PATLG_norm + PATLLA_norm + WPSPA_norm + CFL_norm + PR_norm) / 7
+Ефективність державної влади
+DCS = (year >= 2013) ? ((MPO_norm + SA_norm + CaPOTL_norm) / 3) : ((MPO_norm + SA_norm) / 2)
+Розвиток інститутів громадянського суспільства
+DIS = (MmTL_norm + IU_norm + CS_norm + MmINT_norm) / 4
+Розвиток інформаційного суспільства
+REL = (NRO_norm + CTL_norm) / 2
+Вплив релігійних інституцій
+IID = 0.35 * PCP + 0.25 * DCS + 0.3 * DIS + 0.1 * REL
+Інституційний розвиток
+INF = (PPBD_norm + SHF_norm + AHP_norm + NCPU_norm + PSPTO_norm + CPED_norm / 6
+Стан соціальної інфраструктури
+RS = (DOGCO_norm + COV_norm + NMBE_norm) / 3
+Ризики та безпека життя
+EW = (LS_norm + Illw_norm + FNADAM_norm + GRP_norm) / 4
+Економічне благополуччя
+Iql = 0.35 * INF + 0.35 * RS + 0.3 * EW
+Якість життя
+Is = (Ihd + IID + Iql) / 3
+Соціально - інституційний вимір-----------------------------------
+Cql = power(Ie * Ie + Is * Is + Iec * Iec,0.5)
+Компонента якості життя-----------------------------------
+Sec = power(power(BN_norm,3) + power(KPVM_norm,3) + power(DNO_norm,3),1 / 3)
+Економічна безпека
+Se = (WRS19_norm + POL19_norm + CCH19_norm) / 3
+Екологічна безпека
+HEALTH_DEC = 0.2359512471 * mortTB_norm_rev + 0.236311309 * mortCANC_norm_rev + 0.2899148047 * mortCIRCUL_norm_rev + 0.2378226392 * mortAIDS_norm_rev
+Сметрність населення за причинами смерті
+CORR_PER = CFL
+Індекс сприйняття корупції
+Ss = power(power(LIFE_EXP_norm,3) + power(CRIME_norm,3) + power(CORR_PER_norm,3) + power(CIR_norm,3) + power(HEALTH_DEC_norm,3),1 / 3)
+Соціальна безпека
+TH = (TH_N_PREV2_Y + TH_N_PREV1_Y + TH_N_CURR_Y) / 3
+Техногенна небезпека
+So = TH_norm
+Безпека (інше)
+Csl = power(power(Ss,3) + power(Sec,3) + power(Se,3) + power(So,3),1 / 3)
+Компонента безпеки життя-----------------------------------
+Isd = power(power(1 / power(12, 1 / 3) * Csl,2) + Ie * Ie + Is * Is + Iec * Iec,0.5)
+Індекс сталого розвитку
+G = 1 - acos( (Iec  +  Ie  +  Is)  /  (power(3.0, 0.5)  *  power(Iec * Iec  +  Ie * Ie  +  Is * Is, 0.5)) ) /  acos(1 / power(3,0.5))
+Ступінь гармонізації
+__________________
+end loop 2004-2016
+__________________
